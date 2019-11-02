@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 
 namespace PracaInzynierska.Interfaces
 {
     interface IMathOperations
     {
-        double[] FFTImp(int[] tab, float time, int numberOfSamples);
+       System.Numerics.Complex[] FFTImp(double[] tab, float time, int numberOfSamples);
+        double[] absComplexToDouble(System.Numerics.Complex[] buffer, int numberOfSamples);
 
-       void FunkcjaPrzejscia(int[] tab, int[] tab2, float freq, int numberOfSamples);
+       void FunkcjaPrzejscia(double[] bar, double[] hammer, float freq, int numberOfSamples);//czy freq i nos potzrebne count()
     }
 }

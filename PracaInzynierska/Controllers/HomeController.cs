@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PracaInzynierska.Models;
-using System.IO;
 using PracaInzynierska.Services;
 using Newtonsoft.Json;
 
@@ -16,42 +12,17 @@ namespace PracaInzynierska.Controllers
     {
         public IActionResult Index()
         {
-            List<int> list = new List<int>();
-            using (var reader = new StreamReader(@"C:\Users\USER\Desktop\dane.csv"))
-            {
-                while (!reader.EndOfStream)
-                {
-                    var line = reader.ReadLine();
-                    int value = Int32.Parse(line);
-                    list.Add(value);
-                }
-            }
-            int[] tab = list.ToArray();
-            //MathOperations math = new MathOperations();
-            //math.FFTImp(tab, 1.321f, 700);
+            Graph mygraph = new Graph();
+            double[] tab = mygraph.dataFromFile();
+            List < DataPoint > pointsList = mygraph.fillDataPoints(tab, 700, 1.327f);
 
-            List<DataPoint> dataPoints = new List<DataPoint>();
-            float tp = 1.321f / 700;
-            
-            for (int i = 0; i < 700; i++)
-            {
-               
-                dataPoints.Add(new DataPoint(tp*i,tab[i]));//czy nie od tp+tp*i
-            }
-
-            ViewBag.Time = JsonConvert.SerializeObject(dataPoints);
+            ViewBag.Time = JsonConvert.SerializeObject(pointsList);
             MathOperations math = new MathOperations();
-            double [] fft = math.FFTImp(tab, 1.321f, 700);
-            List<DataPoint> freqPoints = new List<DataPoint>();
+            System.Numerics.Complex[] buffer = math.FFTImp(tab, 1.321f, 700);
+            double[] fft = math.absComplexToDouble(buffer, 700);
+            float fp = 700 / 1.321f;
+            List<DataPoint> freqPoints = mygraph.fillDataPoints(fft, 700, fp);
             
-            float fp = 1 / tp;
-            float df = fp / 700;
-            for (int i = 0; i < 700; i++)
-            {
-
-                freqPoints.Add(new DataPoint(df * i, fft[i]));//czy nie od tp+tp*i
-            }
-
             ViewBag.Freq = JsonConvert.SerializeObject(freqPoints);
 
             return View();

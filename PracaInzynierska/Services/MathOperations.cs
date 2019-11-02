@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PracaInzynierska.Interfaces;
-using MathNet;
+﻿using PracaInzynierska.Interfaces;
+
 
 namespace PracaInzynierska.Services
 {
     public class MathOperations: IMathOperations
     {
-        public double [] FFTImp(int[] tab, float time, int numberOfSamples)
+        //nos jako parametr
+        public System.Numerics.Complex [] FFTImp(double[] tab, float time, int numberOfSamples)
         {
             float tp = time / numberOfSamples;
             float fp = 1 / tp;
-            int sum=0;
+            double sum=0;
             var buffer = new System.Numerics.Complex[numberOfSamples];
             for (int i = 0; i < numberOfSamples; i++)
             {
                 sum += tab[i];
             }
-            float diff = sum / numberOfSamples;
-            float[] tabNormalized = new float [numberOfSamples];
+            double diff = sum / numberOfSamples;
+            double[] tabNormalized = new double [numberOfSamples];
             for (int i = 0; i < numberOfSamples; i++)
             {
                 tabNormalized[i] = tab[i] - diff;
@@ -31,18 +28,24 @@ namespace PracaInzynierska.Services
                 buffer[i] = tmp;
             }
             MathNet.Numerics.IntegralTransforms.Fourier.Forward(buffer, MathNet.Numerics.IntegralTransforms.FourierOptions.Matlab);
-            //do wykresy abs fft
-            double[] bufferABS = new double [numberOfSamples];
-            for (int i = 0; i < numberOfSamples; i++)
+     
+            return buffer;
+            
+        }
+        public  double[] absComplexToDouble(System.Numerics.Complex[]buffer,int numberOfSamples)
+        {
+            double[] bufferABS = new double[numberOfSamples];
+            for (int i = 0; i<numberOfSamples; i++)
             {
                 bufferABS[i] = buffer[i].Magnitude;
             }
-            float df = fp / numberOfSamples;
+   
             return bufferABS;
-           // float tablica_czest = 0:df: fp - df;
         }
-        public void FunkcjaPrzejscia(int[] tab, int[] tab2, float freq, int numberOfSamples)//to bullshit to beda complex
+        
+        public void FunkcjaPrzejscia(double[] bar, double[] hammer, float freq, int numberOfSamples)//to bullshit to beda complex, czy do tego ida magnitude
         {
+
         }
     }
 }

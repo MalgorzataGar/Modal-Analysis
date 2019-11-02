@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using System.Net.Http;
 
 namespace PracaInzynierska.Interfaces
 {
     interface IConnectionService
 
     {
-        //Task HandleConnection(JObject json);
+        Task HandleConnection(JObject json);
+        Task<string> PostRequest(HttpContent content, HttpClient client);
     }
 }
