@@ -1,0 +1,49 @@
+﻿
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script>
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+    zoomEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "Wykres od czasu"
+	},
+	data: [{
+		type: "line",
+		dataPoints: @Html.Raw(ViewBag.Time)
+	}]
+});
+
+    chart.render();
+    var chart2 = new CanvasJS.Chart("chartContainer2", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+    zoomEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "Wykres FFT"
+	},
+	data: [{
+		type: "line",
+		dataPoints: @Html.Raw(ViewBag.Freq)
+	}]
+});
+
+chart2.render();
+}
+    </script>
+</head>
+<body>
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <div id="chartContainer2" style="height: 370px; width: 100%;"></div>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    
+</body>
+</html>                
