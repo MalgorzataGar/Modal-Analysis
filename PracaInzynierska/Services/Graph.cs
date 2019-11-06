@@ -8,20 +8,25 @@ namespace PracaInzynierska.Services
 {
     public class Graph: IGraph
     {
-       public double[] dataFromFile()
+       public void dataFromFile(out double[]bar, out double [] hammer)
         {
-            List<double> list = new List<double>();
+            List<double> list1 = new List<double>();
+            List<double> list2 = new List<double>();
             using (var reader = new StreamReader(@"C:\Users\USER\Desktop\dane.csv"))
             {
                 while (!reader.EndOfStream)
                 {
                     var line = reader.ReadLine();
-                    double value = Double.Parse(line);
-                    list.Add(value);
+                    string[] values = line.Split(';');
+                    double value1 = Double.Parse(values[0]);
+                    double value2 = Double.Parse(values[1]);
+                    list1.Add(value1);
+                    list2.Add(value2);
                 }
             }
-            double[] tab = list.ToArray();
-            return tab;
+            bar = list1.ToArray();
+            hammer = list2.ToArray();
+            
         }
        public List<DataPoint> fillDataPoints(double[]tab,int numberOfSamples,float time)
         {

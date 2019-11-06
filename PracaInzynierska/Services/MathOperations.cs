@@ -1,4 +1,7 @@
 ﻿using PracaInzynierska.Interfaces;
+using PracaInzynierska.Models;
+using System.Collections.Generic;
+using System;
 
 
 namespace PracaInzynierska.Services
@@ -10,21 +13,11 @@ namespace PracaInzynierska.Services
         {
             float tp = time / numberOfSamples;
             float fp = 1 / tp;
-            double sum=0;
             var buffer = new System.Numerics.Complex[numberOfSamples];
+            
             for (int i = 0; i < numberOfSamples; i++)
             {
-                sum += tab[i];
-            }
-            double diff = sum / numberOfSamples;
-            double[] tabNormalized = new double [numberOfSamples];
-            for (int i = 0; i < numberOfSamples; i++)
-            {
-                tabNormalized[i] = tab[i] - diff;
-            }
-            for (int i = 0; i < numberOfSamples; i++)
-            {
-                System.Numerics.Complex tmp = new System.Numerics.Complex(tabNormalized[i], 0);
+                System.Numerics.Complex tmp = new System.Numerics.Complex(tab[i], 0);
                 buffer[i] = tmp;
             }
             MathNet.Numerics.IntegralTransforms.Fourier.Forward(buffer, MathNet.Numerics.IntegralTransforms.FourierOptions.Matlab);
@@ -42,7 +35,48 @@ namespace PracaInzynierska.Services
    
             return bufferABS;
         }
-        
+        public double[] normalization(double[] tab, int numberOfSamples)
+        {
+            double sum = 0;
+            for (int i = 0; i < numberOfSamples; i++)
+            {
+                sum += tab[i];
+            }
+            double diff = sum / numberOfSamples;
+            double[] tabNormalized = new double[numberOfSamples];
+            for (int i = 0; i < numberOfSamples; i++)
+            {
+                tabNormalized[i] = tab[i] - diff;
+            }
+            return tabNormalized;
+        }
+        public List<DataPoint> lowPassFilter(List<DataPoint> dataPoints, double cutOffFrequency,int numberOfSamples)
+        {
+            List<DataPoint> filtred = new List<DataPoint>();
+            for (int i = 0; i < numberOfSamples; i++)
+            {
+                if (dataPoints[i].GetX() < cutOffFrequency)
+                {
+                    filtred.Add(new DataPoint(dataPoints[i].GetX(), dataPoints[i].GetY()));
+                }
+                else
+                {
+                    filtred.Add(new DataPoint(dataPoints[i].GetX(), 0));
+                }
+            }
+            return filtred;
+        }
+       public List<DataPoint> expFilter(List<DataPoint> dataPoints, double lambda, int numberOfSamples)
+        {
+            List<DataPoint> filtred = new List<DataPoint>();
+            double[] exp = new double[numberOfSamples];
+            for (int i = 0; i < numberOfSamples; i++)
+            {
+                exp[i] = Math.Exp((-1) * lambda * dataPoints[i].GetX());
+                filtred.Add(new DataPoint(dataPoints[i].GetX(), exp[i]*dataPoints[i].GetY()));
+            }
+            return filtred;
+        }
         public void FunkcjaPrzejscia(double[] bar, double[] hammer, float freq, int numberOfSamples)//to bullshit to beda complex, czy do tego ida magnitude
         {
 

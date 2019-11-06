@@ -6,44 +6,75 @@
     <script>
 window.onload = function () {
 
-var chart = new CanvasJS.Chart("chartContainer", {
+var chartTB = new CanvasJS.Chart("timebar", {
 	theme: "light2", // "light1", "light2", "dark1", "dark2"
 	animationEnabled: true,
     zoomEnabled: true,
     exportEnabled: true,
 	title: {
-		text: "Wykres od czasu"
+		text: "Wykres od czasu dla belki"
 	},
 	data: [{
 		type: "line",
-		dataPoints: @Html.Raw(ViewBag.Time)
+		dataPoints: @Html.Raw(ViewBag.TimeBar)
 	}]
 });
-
-    chart.render();
-    var chart2 = new CanvasJS.Chart("chartContainer2", {
+    chartTB.render();
+    var chartTH = new CanvasJS.Chart("timehammer", {
 	theme: "light2", // "light1", "light2", "dark1", "dark2"
 	animationEnabled: true,
     zoomEnabled: true,
     exportEnabled: true,
 	title: {
-		text: "Wykres FFT"
+		text: "Wykres od czasu dla młotka"
 	},
 	data: [{
 		type: "line",
-		dataPoints: @Html.Raw(ViewBag.Freq)
+		dataPoints: @Html.Raw(ViewBag.TimeHammer)
 	}]
 });
 
-chart2.render();
+    chartTH.render();
+    var chartFB = new CanvasJS.Chart("fftbar", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+    zoomEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "Wykres FFT belki"
+	},
+	data: [{
+		type: "line",
+		dataPoints: @Html.Raw(ViewBag.FreqBar)
+	}]
+});
+
+    chartFB.render();
+      var chartFH = new CanvasJS.Chart("ffthammer", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+    zoomEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "Wykres FFT młotka"
+	},
+	data: [{
+		type: "line",
+		dataPoints: @Html.Raw(ViewBag.FreqHammer)
+	}]
+});
+
+chartFH.render();
 }
     </script>
 </head>
 <body>
-    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-    <div id="chartContainer2" style="height: 370px; width: 100%;"></div>
+    <div id="timebar" style="width: 45%; height: 300px;display: inline-block;"></div>
+    <div id="timehammer" style="width: 45%; height: 300px;display: inline-block;"></div>
+    <div id="fftbar" style="width: 45%; height: 300px;display: inline-block;"></div>
+    <div id="ffthammer" style="width: 45%; height: 300px;display: inline-block;"></div>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-    
+
 </body>
 </html>                

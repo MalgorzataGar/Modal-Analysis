@@ -13,17 +13,32 @@ namespace PracaInzynierska.Controllers
         public IActionResult Index()
         {
             Graph mygraph = new Graph();
-            double[] tab = mygraph.dataFromFile();
-            List < DataPoint > pointsList = mygraph.fillDataPoints(tab, 700, 1.327f);
-
-            ViewBag.Time = JsonConvert.SerializeObject(pointsList);
+            double[] bar_raw;
+            double[] hammer_raw;
+            float time = 6.192f;
+            int numberOfPoints = 1500;
             MathOperations math = new MathOperations();
-            System.Numerics.Complex[] buffer = math.FFTImp(tab, 1.321f, 700);
-            double[] fft = math.absComplexToDouble(buffer, 700);
-            float fp = 700 / 1.321f;
-            List<DataPoint> freqPoints = mygraph.fillDataPoints(fft, 700, fp);
+            mygraph.dataFromFile(out bar_raw, out hammer_raw);
+            double[] bar = math.normalization(bar_raw, numberOfPoints);
+            double[] hammer = math.normalization(hammer_raw, numberOfPoints);
+
+            List < DataPoint > pointsListBar = mygraph.fillDataPoints(bar, numberOfPoints, time);
+            List<DataPoint> pointsListHammer = mygraph.fillDataPoints(hammer, numberOfPoints, time);
             
-            ViewBag.Freq = JsonConvert.SerializeObject(freqPoints);
+            ViewBag.TimeBar = JsonConvert.SerializeObject(pointsListBar);
+            ViewBag.TimeHammer = JsonConvert.SerializeObject(pointsListHammer);
+            
+            System.Numerics.Complex[] bufferBar = math.FFTImp(bar, time, numberOfPoints);
+            System.Numerics.Complex[] bufferHammer = math.FFTImp(hammer, time, numberOfPoints);
+            double[] fftBar = math.absComplexToDouble(bufferBar, numberOfPoints);
+            double[] fftHammer = math.absComplexToDouble(bufferHammer, numberOfPoints);
+            float fp = numberOfPoints / time;
+            List<DataPoint> freqPointsBar = mygraph.fillDataPoints(fftBar, (numberOfPoints/2), fp);
+            List<DataPoint> filtredBar = math.expFilter(freqPointsBar, 0.01, numberOfPoints / 2);
+            ViewBag.FreqBar = JsonConvert.SerializeObject(filtredBar);
+            List<DataPoint> freqPointsHammer = mygraph.fillDataPoints(fftHammer, (numberOfPoints / 2) , fp);
+            List<DataPoint> filtredHammer = math.lowPassFilter(freqPointsHammer, 21.3, numberOfPoints / 2);
+            ViewBag.FreqHammer = JsonConvert.SerializeObject(filtredHammer);
 
             return View();
         }
