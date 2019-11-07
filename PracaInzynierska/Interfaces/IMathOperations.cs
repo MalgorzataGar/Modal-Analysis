@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PracaInzynierska.Interfaces
 {
-    interface IMathOperations
+    public interface IMathOperations
     {
         System.Numerics.Complex[] FFTImp(double[] tab, float time, int numberOfSamples);
         double[] absComplexToDouble(System.Numerics.Complex[] buffer, int numberOfSamples);

@@ -1,6 +1,10 @@
 #include <Wire.h>
 #include <LSM303.h>
+<<<<<<< HEAD
+#include <ESP8266WiFi.h>
+=======
 #include<ESP8266WiFi.h>
+>>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
 #include <FS.h>
 
 LSM303 bar;
@@ -8,7 +12,12 @@ LSM303 hammer;
 unsigned long startTime;
 unsigned long currentTime;
 unsigned long timeS;
+<<<<<<< HEAD
+char* filename;
+
+=======
 const char* filename = "/pomiar052.txt";
+>>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
 void setup() {
   Serial.begin(115200);
   while(!Serial) { delay(100); }
@@ -38,7 +47,20 @@ void setup() {
 }
 
 void loop() {
+<<<<<<< HEAD
+//tu handle client
+    delay(20000);
+}
+void HandleClient()
+{
+  // czeka sobie na klienta i jak tzreba to write to file potem 
+ }
+void WriteToFile()
+{
+    int i;
+=======
   int i;
+>>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
   
   File f = SPIFFS.open(filename, "w");
  if (!f) {
@@ -48,6 +70,10 @@ void loop() {
   {
       Serial.println("Writing Data to File");
       Serial.println("start");
+<<<<<<< HEAD
+      //zaswiec diode
+=======
+>>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
       delay(3000);
       startTime = millis();
 
@@ -66,7 +92,17 @@ void loop() {
       f.close();  //Close file
       Serial.println("Data saved ");
   }
+<<<<<<< HEAD
+ }
+ void WriteFileForClient()
+ {
+  }
+ void ReadfromfileToSerial()
+ {
+   File f2 = SPIFFS.open(filename, "r");
+=======
   File f2 = SPIFFS.open(filename, "r");
+>>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
    if (!f2) {
     Serial.println("file open failed");
   }
@@ -81,11 +117,15 @@ void loop() {
       f2.close();  //Close file
       Serial.println("File Closed");
   }
+<<<<<<< HEAD
+  }
+=======
   
     delay(20000);
 }
 
 
+>>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
  
 
 

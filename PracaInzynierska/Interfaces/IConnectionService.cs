@@ -4,7 +4,7 @@ using System.Net.Http;
 
 namespace PracaInzynierska.Interfaces
 {
-    interface IConnectionService
+    public interface IConnectionService
 
     {
         Task HandleConnection(JObject json);

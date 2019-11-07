@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PracaInzynierska.Interfaces;
+using PracaInzynierska.Services;
+using PracaInzynierska.Models;
 
 namespace PracaInzynierska
 {
@@ -30,7 +33,12 @@ namespace PracaInzynierska
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
+            services.AddScoped<IMathOperations, MathOperations>();
+            services.AddScoped<IGraph, Graph>();
+            UrlConfigurationModel config = new UrlConfigurationModel();
+            Configuration.GetSection("UrlConfigurationModel").Bind(config);
+            services.Configure<UrlConfigurationModel>(Configuration.GetSection("UrlConfigurationModel"));
+            _ = services.AddScoped<IConnectionService, ConnectionService>(conn => new ConnectionService(config.MyUrl));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
