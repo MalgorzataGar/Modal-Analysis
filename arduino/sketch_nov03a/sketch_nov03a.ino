@@ -1,10 +1,9 @@
 #include <Wire.h>
 #include <LSM303.h>
-<<<<<<< HEAD
 #include <ESP8266WiFi.h>
-=======
+
 #include<ESP8266WiFi.h>
->>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
+
 #include <FS.h>
 
 LSM303 bar;
@@ -15,9 +14,9 @@ unsigned long timeS;
 <<<<<<< HEAD
 char* filename;
 
-=======
+
 const char* filename = "/pomiar052.txt";
->>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
+
 void setup() {
   Serial.begin(115200);
   while(!Serial) { delay(100); }
@@ -47,7 +46,7 @@ void setup() {
 }
 
 void loop() {
-<<<<<<< HEAD
+
 //tu handle client
     delay(20000);
 }

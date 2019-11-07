@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PracaInzynierska.Models;
 using PracaInzynierska.Interfaces;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 
 namespace PracaInzynierska.Controllers
@@ -20,49 +21,15 @@ namespace PracaInzynierska.Controllers
 
         public HomeController(IConnectionService connectionService, IGraph graph, IMathOperations mathOperations)
         {
-<<<<<<< HEAD
-=======
-            Graph mygraph = new Graph();
-            double[] bar_raw;
-            double[] hammer_raw;
-            float time = 6.192f;
-            int numberOfPoints = 1500;
-            MathOperations math = new MathOperations();
-            mygraph.dataFromFile(out bar_raw, out hammer_raw);
-            double[] bar = math.normalization(bar_raw, numberOfPoints);
-            double[] hammer = math.normalization(hammer_raw, numberOfPoints);
-
-            List < DataPoint > pointsListBar = mygraph.fillDataPoints(bar, numberOfPoints, time);
-            List<DataPoint> pointsListHammer = mygraph.fillDataPoints(hammer, numberOfPoints, time);
-            
-            ViewBag.TimeBar = JsonConvert.SerializeObject(pointsListBar);
-            ViewBag.TimeHammer = JsonConvert.SerializeObject(pointsListHammer);
-            
-            System.Numerics.Complex[] bufferBar = math.FFTImp(bar, time, numberOfPoints);
-            System.Numerics.Complex[] bufferHammer = math.FFTImp(hammer, time, numberOfPoints);
-            double[] fftBar = math.absComplexToDouble(bufferBar, numberOfPoints);
-            double[] fftHammer = math.absComplexToDouble(bufferHammer, numberOfPoints);
-            float fp = numberOfPoints / time;
-            List<DataPoint> freqPointsBar = mygraph.fillDataPoints(fftBar, (numberOfPoints/2), fp);
-            List<DataPoint> filtredBar = math.expFilter(freqPointsBar, 0.01, numberOfPoints / 2);
-            ViewBag.FreqBar = JsonConvert.SerializeObject(filtredBar);
-            List<DataPoint> freqPointsHammer = mygraph.fillDataPoints(fftHammer, (numberOfPoints / 2) , fp);
-            List<DataPoint> filtredHammer = math.lowPassFilter(freqPointsHammer, 21.3, numberOfPoints / 2);
-            ViewBag.FreqHammer = JsonConvert.SerializeObject(filtredHammer);
->>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
-
             ConnectionService = connectionService;
             Graph = graph;
             MathOperations = mathOperations;
         }
         public IActionResult Index()
         {
-            //get data from viewer
-            //set number of tests
-            //uruchom
-            //nt from view
-            //start pzrenosi do fukcji ospowiadajacej za connection  
-            // dopisz instukcje
+            string str = "{'filename': 'pomiar2.txt'}";
+            JObject configJson = JObject.Parse(str);
+            ConnectionService.HandleConnection(configJson);
             return View();
         }
         public IActionResult AnalizeData()

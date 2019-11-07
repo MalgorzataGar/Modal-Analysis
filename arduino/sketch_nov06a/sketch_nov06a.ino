@@ -1,9 +1,7 @@
-<<<<<<< HEAD
 #include <ESP8266WiFi.h>
 #include <ArduinoJson.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#include <SoftwareSerial.h>
 #include <Wire.h>
 #include <LSM303.h>
 #include <FS.h>
@@ -11,9 +9,10 @@
 LSM303 bar;
 LSM303 hammer;
 
-//char* filename;
-String filename;
-const char *ssid = "nazwa wifi";
+char filename[20];
+
+const char *ssid = "WLAN1-002093";
+const char *password = "7277AF0C32C26AC";
 WiFiServer server(80);
 
 String header;
@@ -25,42 +24,10 @@ const long timeoutTime = 2000;
 
 void setup() {
   Serial.begin(115200);
-=======
-#include <ArduinoJson.h>
-#include <ESP8266WiFi.h>
-#include <WiFiClient.h>
-#include <ESP8266WebServer.h>
-#include <SoftwareSerial.h>
 
-
-const char *ssid = "MikroTik-CF2A6D";
-ESP8266WebServer server(80);
-
-String header;
-
-// Current time
-unsigned long currentTime = millis();
-// Previous time
-unsigned long previousTime = 0;
-// Define timeout time in milliseconds
-const long timeoutTime = 2000;
-
-struct ConfigData {
-  String Mode;
-  String ADR;
-  String App_key;
-  String Dev_addr;
-  String Join;
-  int DR;
-};
-
-ConfigData configData;
-void setup() {
-  Serial.begin(9600);
->>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
   Serial.print("Connecting to ");
   Serial.println(ssid);
-  WiFi.begin(ssid);
+  WiFi.begin(ssid,password);
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
@@ -71,7 +38,6 @@ void setup() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
   server.begin();
-<<<<<<< HEAD
   while(!Serial) { delay(100); }
     Wire.begin();
  if(SPIFFS.begin())
@@ -96,26 +62,18 @@ void setup() {
   hammer.init(LSM303::device_auto, LSM303::sa0_high);
   bar.enableDefault();
   hammer.enableDefault();
-=======
 
-
->>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
 }
 
 void loop()
 {
   HandleClient();
-<<<<<<< HEAD
+
 }
-void HandleClient()
-{
-=======
-  
-}
+
 void HandleClient()
 {
   DynamicJsonBuffer jsonBuffer;
->>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
   WiFiClient client = server.available();
   if (client)
   {
@@ -128,38 +86,35 @@ void HandleClient()
       currentTime = millis();
       if (client.available())
       {
+        
         char c = client.read();
         Serial.write(c);
         header += c;
         if (c == '\n')
         { 
-          if (header.indexOf("POST ") >= 0)
-            {
-              String line = client.readStringUntil('}');
-              line += "}";
-              JsonObject& root = jsonBuffer.parseObject(line);
-<<<<<<< HEAD
-              filename= root["filename"].as<String>();
-              WriteToFile();
-=======
-              JsonToConfigStruct(root);
-              //przeprowadz pomiar
-
->>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
-            }
+          
           if (currentLine.length() == 0)
           {
-
-            client.println("HTTP/1.1 200 OK");
-            client.println("Content-type:application/json");
-            client.println("Connection: close");
-            client.println();
-<<<<<<< HEAD
-            WriteFileForClient(client);
-=======
+            if (header.indexOf("POST ") >= 0)
+            {
+              Serial.println("in post");
+              String line = client.readStringUntil('}');
+              line += "}";
+              
+              JsonObject& root = jsonBuffer.parseObject(line);
+              String filenameBuffer= root["filename"].as<String>();
+              filenameBuffer.toCharArray(filename,sizeof(filename));
+              WriteToFile();
+            }
             
-           
->>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
+            client.println("HTTP/1.1 200 OK");
+            client.println("Content-type:text/plain");
+            client.println("");
+            
+            WriteFileForClient(client);  
+            //client.println("Connection: close");
+            client.println();
+
           }
           else
           {
@@ -180,18 +135,8 @@ void HandleClient()
    
   }
 }
-<<<<<<< HEAD
 
-//void SD_file_download(String filename) {
-//  File download = SPIFFS.open("/" + filename, "w");
-//  if (download) {
-//    server.sendHeader("Content-Type", "text/text");
-//    server.sendHeader("Content-Disposition", "attachment; filename=" + filename);
-//    server.sendHeader("Connection", "close");
-//    server.streamFile(download, "application/octet-stream");
-//    download.close();
-//  } else ReportFileNotPresent("download");
-//}
+
 void WriteToFile()
 {
     int i;
@@ -227,12 +172,16 @@ void WriteToFile()
  void WriteFileForClient(WiFiClient client)
  {
   int i;
+  char a;
+  Serial.println("Writing data for client");
    File f2 = SPIFFS.open(filename, "r");
    if (f2) 
   {
       for(i=0;i<f2.size();i++) //Read upto complete file size
       {
-        client.print((char)f2.read());
+        a=(char)f2.read();
+        client.print(a);
+        
       }
       f2.close(); 
   }
@@ -256,26 +205,14 @@ void WriteToFile()
       Serial.println("File Closed");
   }
   }
-=======
-void JsonToConfigStruct(JsonObject& root)
-{
-
-  configData.Mode = root["Mode"].as<String>();
-  configData.ADR = root["AdaptiveDataRate"].as<String>();
-  configData.DR = root["DataRate"].as<int>();
-  configData.App_key = root["AppKey"].as<String>();
-  configData.Dev_addr = root["DevAddr"].as<String>();
-  configData.Join = root["Join"].as<String>();
-
-}
-void SD_file_download(String filename) {
-  File download = SPIFFS.open("/" + filename, "w");
-  if (download) {
-    server.sendHeader("Content-Type", "text/text");
-    server.sendHeader("Content-Disposition", "attachment; filename=" + filename);
-    server.sendHeader("Connection", "close");
-    server.streamFile(download, "application/octet-stream");
-    download.close();
-  } else ReportFileNotPresent("download");
-}
->>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
+//
+//void SD_file_download(String filename) {
+//  File download = SPIFFS.open("/" + filename, "w");
+//  if (download) {
+//    server.sendHeader("Content-Type", "text/text");
+//    server.sendHeader("Content-Disposition", "attachment; filename=" + filename);
+//    server.sendHeader("Connection", "close");
+//    server.streamFile(download, "application/octet-stream");
+//    download.close();
+//  } else ReportFileNotPresent("download");
+//}

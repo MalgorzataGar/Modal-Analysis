@@ -38,9 +38,7 @@ namespace PracaInzynierska.Services
                 if (resp.Content != null)
                 {
                     string responseContent = await resp.Content.ReadAsStringAsync();
-                    int index = responseContent.IndexOf("}");
-                    if (index > 0)
-                        responseContent = responseContent.Substring(0, index + 1);
+                    
                     return responseContent;
                 }
                 else
