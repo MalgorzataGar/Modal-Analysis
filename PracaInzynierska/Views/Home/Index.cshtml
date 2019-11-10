@@ -1,86 +1,46 @@
-<<<<<<< HEAD
-﻿@{
-    ViewData["Title"] = "Satrt";
+
+
+@{
+    ViewData["Title"] = "Start";
+
 }
-=======
-﻿
 
-<!DOCTYPE HTML>
-<html>
-<head>
-    <script>
-window.onload = function () {
 
-var chartTB = new CanvasJS.Chart("timebar", {
-	theme: "light2", // "light1", "light2", "dark1", "dark2"
-	animationEnabled: true,
-    zoomEnabled: true,
-    exportEnabled: true,
-	title: {
-		text: "Wykres od czasu dla belki"
-	},
-	data: [{
-		type: "line",
-		dataPoints: @Html.Raw(ViewBag.TimeBar)
-	}]
-});
-    chartTB.render();
-    var chartTH = new CanvasJS.Chart("timehammer", {
-	theme: "light2", // "light1", "light2", "dark1", "dark2"
-	animationEnabled: true,
-    zoomEnabled: true,
-    exportEnabled: true,
-	title: {
-		text: "Wykres od czasu dla młotka"
-	},
-	data: [{
-		type: "line",
-		dataPoints: @Html.Raw(ViewBag.TimeHammer)
-	}]
-});
 
-    chartTH.render();
-    var chartFB = new CanvasJS.Chart("fftbar", {
-	theme: "light2", // "light1", "light2", "dark1", "dark2"
-	animationEnabled: true,
-    zoomEnabled: true,
-    exportEnabled: true,
-	title: {
-		text: "Wykres FFT belki"
-	},
-	data: [{
-		type: "line",
-		dataPoints: @Html.Raw(ViewBag.FreqBar)
-	}]
-});
+<div class="row">
 
-    chartFB.render();
-      var chartFH = new CanvasJS.Chart("ffthammer", {
-	theme: "light2", // "light1", "light2", "dark1", "dark2"
-	animationEnabled: true,
-    zoomEnabled: true,
-    exportEnabled: true,
-	title: {
-		text: "Wykres FFT młotka"
-	},
-	data: [{
-		type: "line",
-		dataPoints: @Html.Raw(ViewBag.FreqHammer)
-	}]
-});
+    <p></p>
+    <form asp-controller="Home" method="post">
+        @if (ViewBag.currentMeasure == -1)
+        {
+            <ul>
+                <li>
+                    W celu przeprowadzenia analizy wprowadź ilość pomiarów na punkt a następnie naciśnij START.
+                    Zostanie uruchomiony system pomiarowy. Po zapaleniu diody w ciągu 3 sekund rozpocznie się pomiar
+                </li>
+            </ul>
+            <div class="form-group ">
+                <label for="numberOfTestsPerPoint">Ilość pomiarów na punkt:</label>
+                <select class="form-control" id="numberOfTestsPerPoint" name="numberOfTestsPerPoint">
+                    <option value='4'>4</option>
+                    <option value='5'selected>5</option>
+                    <option value='6'>6</option>
+                    <option value='7'>7</option>
+                </select>
+            </div>
+            
+        }
+        else
+        {
+            <ul>
+                <li>Aby rozpocząć kolejny pomiar nasciśnij START</li>
+            </ul>
+        }
 
-chartFH.render();
-}
-    </script>
-</head>
-<body>
-    <div id="timebar" style="width: 45%; height: 300px;display: inline-block;"></div>
-    <div id="timehammer" style="width: 45%; height: 300px;display: inline-block;"></div>
-    <div id="fftbar" style="width: 45%; height: 300px;display: inline-block;"></div>
-    <div id="ffthammer" style="width: 45%; height: 300px;display: inline-block;"></div>
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+        <div class="form-group ">
+            <input type="submit" asp-action="AnalizeData" class="btn btn-success" value="START" />
+        </div>
 
-</body>
-</html>                
->>>>>>> 4b5e463ee9eb6c82b6551839dec9661d5e5fb597
+
+    </form>
+</div>
