@@ -50,32 +50,31 @@ namespace PracaInzynierska.Services
             }
             return tabNormalized;
         }
-        public List<DataPoint> lowPassFilter(List<DataPoint> dataPoints, double cutOffFrequency,int numberOfSamples)
+        public RecaivedData lowPassFilter( RecaivedData Data,double cutOff)
         {
-            List<DataPoint> filtred = new List<DataPoint>();
-            for (int i = 0; i < numberOfSamples; i++)
+            double tp = Data.time / Data.numberOfSamples;
+            for (int i = 0; i < Data.numberOfSamples; i++)
             {
-                if (dataPoints[i].GetX() < cutOffFrequency)
+                if ((tp * i) > cutOff)
                 {
-                    filtred.Add(new DataPoint(dataPoints[i].GetX(), dataPoints[i].GetY()));
+                    Data.bar[i] = 0;
                 }
-                else
-                {
-                    filtred.Add(new DataPoint(dataPoints[i].GetX(), 0));
-                }
+               
             }
-            return filtred;
+            return Data;
         }
-       public List<DataPoint> expFilter(List<DataPoint> dataPoints, double lambda, int numberOfSamples)
+       public RecaivedData expFilter( RecaivedData Data, double lambda)
         {
-            List<DataPoint> filtred = new List<DataPoint>();
-            double[] exp = new double[numberOfSamples];
-            for (int i = 0; i < numberOfSamples; i++)
+
+            double[] exp = new double[Data.numberOfSamples];
+            double tp = Data.time / Data.numberOfSamples;
+            for (int i = 0; i < Data.numberOfSamples; i++)
             {
-                exp[i] = Math.Exp((-1) * lambda * dataPoints[i].GetX());
-                filtred.Add(new DataPoint(dataPoints[i].GetX(), exp[i]*dataPoints[i].GetY()));
+                exp[i] = Math.Exp((-1) * lambda * (tp*i));
+                Data.bar[i] = exp[i] * Data.bar[i];
             }
-            return filtred;
+            return Data;
+            
         }
         public void FunkcjaPrzejscia(double[] bar, double[] hammer, float freq, int numberOfSamples)//to bullshit to beda complex, czy do tego ida magnitude
         {

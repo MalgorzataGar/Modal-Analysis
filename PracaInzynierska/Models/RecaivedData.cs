@@ -6,9 +6,9 @@ namespace PracaInzynierska.Models
 {
     public class RecaivedData
     {
-        double[] bar { get; set; }
-        double[] hammer { get; set; }
-        double[] time { get; set; }
-        double[] numberOfSamples { get; set; }
+        public double[] bar { get; set; }
+        public double[] hammer { get; set; }
+        public double time { get; set; }
+        public int numberOfSamples { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using PracaInzynierska.Interfaces;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using System.Text;
+using PracaInzynierska.Models;
 
 namespace PracaInzynierska.Services
 {
@@ -12,7 +13,7 @@ namespace PracaInzynierska.Services
 
     {
         public string myUrl;
-        static public string contextResponse;
+        public string contextResponse;
         public ConnectionService(string MyUrl)
         {
             myUrl = MyUrl;
@@ -26,10 +27,11 @@ namespace PracaInzynierska.Services
                 string request = json.ToString();
                 HttpContent content = new StringContent(request, Encoding.UTF8, "application/json");
                 string buffer = await PostRequest(content, client);
-
+                contextResponse = buffer;
+                
             }
-
-            return;
+            
+          
         }
         public async Task<string> PostRequest(HttpContent content, HttpClient client)
         {
@@ -50,5 +52,12 @@ namespace PracaInzynierska.Services
                 }
             }
         }
+        public RecaivedData GetDataFromString()
+        {
+            RecaivedData Data = new RecaivedData();
+
+            return Data;
+        }
+
     }
 }
