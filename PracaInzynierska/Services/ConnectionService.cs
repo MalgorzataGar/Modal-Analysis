@@ -56,6 +56,22 @@ namespace PracaInzynierska.Services
         {
             RecaivedData Data = new RecaivedData();
 
+            string[] lines = contextResponse.Split('\n');
+            int i = 0;
+            foreach (var line in lines)
+            {
+                if (i == 1500)
+                {
+                    Data.time = double.Parse(line);
+                }
+                else
+                {
+                    string[] measures = line.Split(',');
+                    Data.bar[i] = double.Parse(measures[0]);
+                    Data.hammer[i] = double.Parse(measures[1]);
+                    i++;
+                }
+            }
             return Data;
         }
 

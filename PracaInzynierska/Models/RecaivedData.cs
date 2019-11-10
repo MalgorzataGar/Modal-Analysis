@@ -10,5 +10,9 @@ namespace PracaInzynierska.Models
         public double[] hammer { get; set; }
         public double time { get; set; }
         public int numberOfSamples { get; set; }
+        public RecaivedData()
+        {
+            numberOfSamples = 1500;
+        }
     }
 }
