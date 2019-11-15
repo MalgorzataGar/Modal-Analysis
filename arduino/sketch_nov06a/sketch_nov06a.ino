@@ -14,13 +14,13 @@ char filename[20];
 const char *ssid = "WLAN1-002093";
 const char *password = "7277AF0C32C26AC";
 WiFiServer server(80);
-
+const int output = D0;
 String header;
 unsigned long startTime;
 unsigned long timeS;
-unsigned long currentTime;
+unsigned long currentTime=millis();
 unsigned long previousTime = 0;
-const long timeoutTime = 2000;
+const long timeoutTime = 5000;
 
 void setup() {
   Serial.begin(115200);
@@ -28,6 +28,8 @@ void setup() {
   Serial.print("Connecting to ");
   Serial.println(ssid);
   WiFi.begin(ssid,password);
+   pinMode(output, OUTPUT);
+  digitalWrite(output, LOW);
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
@@ -84,9 +86,9 @@ void HandleClient()
     while (client.connected() && currentTime - previousTime <= timeoutTime)
     {
       currentTime = millis();
+      Serial.println(client.available());
       if (client.available())
       {
-        
         char c = client.read();
         Serial.write(c);
         header += c;
@@ -97,13 +99,13 @@ void HandleClient()
           {
             if (header.indexOf("POST ") >= 0)
             {
-              Serial.println("in post");
               String line = client.readStringUntil('}');
               line += "}";
               
               JsonObject& root = jsonBuffer.parseObject(line);
               String filenameBuffer= root["filename"].as<String>();
               filenameBuffer.toCharArray(filename,sizeof(filename));
+              Serial.println(filename);
               WriteToFile();
             }
             
@@ -149,7 +151,7 @@ void WriteToFile()
   {
       Serial.println("Writing Data to File");
       Serial.println("start");
-      //zaswiec diode
+      digitalWrite(output, HIGH);
       delay(3000);
       startTime = millis();
 
@@ -164,6 +166,7 @@ void WriteToFile()
  }
       currentTime = millis();
       timeS = (currentTime - startTime);
+      digitalWrite(output, LOW);
       f.print(timeS);
       f.close();  //Close file
       Serial.println("Data saved ");
@@ -205,14 +208,3 @@ void WriteToFile()
       Serial.println("File Closed");
   }
   }
-//
-//void SD_file_download(String filename) {
-//  File download = SPIFFS.open("/" + filename, "w");
-//  if (download) {
-//    server.sendHeader("Content-Type", "text/text");
-//    server.sendHeader("Content-Disposition", "attachment; filename=" + filename);
-//    server.sendHeader("Connection", "close");
-//    server.streamFile(download, "application/octet-stream");
-//    download.close();
-//  } else ReportFileNotPresent("download");
-//}

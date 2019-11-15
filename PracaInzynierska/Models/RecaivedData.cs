@@ -13,6 +13,8 @@ namespace PracaInzynierska.Models
         public RecaivedData()
         {
             numberOfSamples = 1500;
+            bar = new double[numberOfSamples];
+            hammer = new double[numberOfSamples];
         }
     }
 }

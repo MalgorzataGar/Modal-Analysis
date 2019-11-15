@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewData["Title"] = "Filtred";
+}
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script>
+window.onload = function () {
+
+var chartFilB = new CanvasJS.Chart("FiltredBar", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+    zoomEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "Wykres od czasu dla belki"
+	},
+	data: [{
+		type: "line",
+		dataPoints: @Html.Raw(ViewBag.FiltredBar)
+	}]
+});
+    chartFilB.render();
+    var chartFilH = new CanvasJS.Chart("FiltredHammer", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+    zoomEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "Wykres od czasu dla młotka"
+	},
+	data: [{
+		type: "line",
+		dataPoints: @Html.Raw(ViewBag.FiltredHammer)
+	}]
+    });
+      chartFilH.render();
+    var chartFB = new CanvasJS.Chart("fftbar", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+    zoomEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "Wykres FFT belki"
+	},
+	data: [{
+		type: "line",
+		dataPoints: @Html.Raw(ViewBag.FreqBar)
+	}]
+});
+
+    chartFB.render();
+      var chartFH = new CanvasJS.Chart("ffthammer", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+    zoomEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "Wykres FFT młotka"
+	},
+	data: [{
+		type: "line",
+		dataPoints: @Html.Raw(ViewBag.FreqHammer)
+	}]
+});
+
+      chartFH.render();
+      var chartFrfM = new CanvasJS.Chart("FrfMagnitude", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+    zoomEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "Wykres FFR"
+	},
+	data: [{
+		type: "line",
+		dataPoints: @Html.Raw(ViewBag.FrfMagitude)
+	}]
+      });
+    chartFrfM.render();
+      var chartFrfR = new CanvasJS.Chart("FrfReal", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+    zoomEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "Wykres FFR wartości rzeczywiste"
+	},
+	data: [{
+		type: "line",
+		dataPoints: @Html.Raw(ViewBag.FrfReal)
+	}]
+});
+    chartFrfR.render();
+          var chartFrfI = new CanvasJS.Chart("FrfImaginary", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+    zoomEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "Wykres FFR wartości urojone"
+	},
+	data: [{
+		type: "line",
+		dataPoints: @Html.Raw(ViewBag.FrfImaginary)
+	}]
+});
+chartFrfI.render();
+}
+    </script>
+</head>
+<body>
+    <div id="FiltredBar" style="width: 48%; height: 300px;display: inline-block;"></div>
+    <div id="FiltredHammer" style="width: 48%; height: 300px;display: inline-block;"></div>
+    <div id="fftbar" style="width: 48%; height: 300px;display: inline-block;"></div>
+    <div id="ffthammer" style="width: 48%; height: 300px;display: inline-block;"></div>
+    <div id="FrfReal" style="width: 48%; height: 300px;display: inline-block;"></div>
+    <div id="FrfImaginary" style="width: 48%; height: 300px;display: inline-block;"></div>
+    <div id="FrfMagnitude" style="width: 100%; height: 300px;"></div>
+
+    <form asp-controller="Home" method="post">
+      
+            <div class="form-group ">
+                <input type="submit" asp-action="Accept" class="btn btn-success" value="Przejdź dalej" />
+            </div>
+        </div>
+    </form>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+
+</body>
+</html>

@@ -32,6 +32,7 @@ namespace PracaInzynierska
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            services.AddSession();
 
             services.AddScoped<IMathOperations, MathOperations>();
             services.AddScoped<IGraph, Graph>();
@@ -40,6 +41,13 @@ namespace PracaInzynierska
             services.Configure<UrlConfigurationModel>(Configuration.GetSection("UrlConfigurationModel"));
             _ = services.AddScoped<IConnectionService, ConnectionService>(conn => new ConnectionService(config.MyUrl));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDistributedMemoryCache();
+
+            
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,7 +63,9 @@ namespace PracaInzynierska
             }
 
             app.UseStaticFiles();
+            app.UseSession();
             app.UseCookiePolicy();
+            
 
             app.UseMvc(routes =>
             {
@@ -63,6 +73,7 @@ namespace PracaInzynierska
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            
         }
     }
 }

@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewData["Title"] = "DataTime";
+}
+
+<h2>Filtred</h2>
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script>
+window.onload = function () {
+
+var chartTB = new CanvasJS.Chart("timebar", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+    zoomEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "Wykres od czasu dla belki"
+	},
+	data: [{
+		type: "line",
+		dataPoints: @Html.Raw(ViewBag.TimeBar)
+	}]
+});
+    chartTB.render();
+    var chartTH = new CanvasJS.Chart("timehammer", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+    zoomEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "Wykres od czasu dla młotka"
+	},
+	data: [{
+		type: "line",
+		dataPoints: @Html.Raw(ViewBag.TimeHammer)
+	}]
+});
+
+chartTH.render();
+}
+    </script>
+</head>
+<body>
+    <div id="timebar" style="width: 45%; height: 300px;display: inline-block;"></div>
+    <div id="timehammer" style="width: 45%; height: 300px;display: inline-block;"></div>
+    <form asp-controller="Home" method="post">
+        
+            <div class="form-group ">
+                <label for="lambda" class="col-md-2 control-label">Lambda:</label>
+                <input class="form-control" id="lambda" name="lambda" placeholder="Podaj lambdę" type="text" value="@ViewData["lambda"]" />
+            </div>
+            <div class="form-group ">
+                <label for="cutOff" class="col-md-2 control-label">Częstotliwość odcięcia:</label>
+                <input class="form-control" id="cutOff" name="cutOff" type="text" placeholder="Podaj częstotliwość odcięcia" value="@ViewData["cutOff"]" />
+            </div>
+            <div class="form-group ">
+                <input type="submit" asp-action="Filtration" class="btn btn-success" value="Filtracja" />
+            </div>
+        
+    </form>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+
+</body>
+</html>

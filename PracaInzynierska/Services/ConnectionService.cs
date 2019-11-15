@@ -5,7 +5,7 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using PracaInzynierska.Models;
-
+using System.IO;
 namespace PracaInzynierska.Services
 {
 
@@ -13,7 +13,7 @@ namespace PracaInzynierska.Services
 
     {
         public string myUrl;
-        public string contextResponse;
+        static public string contextResponse;
         public ConnectionService(string MyUrl)
         {
             myUrl = MyUrl;
@@ -27,10 +27,10 @@ namespace PracaInzynierska.Services
                 string request = json.ToString();
                 HttpContent content = new StringContent(request, Encoding.UTF8, "application/json");
                 string buffer = await PostRequest(content, client);
-                contextResponse = buffer;
+                
                 
             }
-            
+            return;
           
         }
         public async Task<string> PostRequest(HttpContent content, HttpClient client)
@@ -40,7 +40,7 @@ namespace PracaInzynierska.Services
                 if (resp.Content != null)
                 {
                     string responseContent = await resp.Content.ReadAsStringAsync();
-                    
+                    contextResponse = responseContent;
                     return responseContent;
                 }
                 else
@@ -57,18 +57,23 @@ namespace PracaInzynierska.Services
             RecaivedData Data = new RecaivedData();
 
             string[] lines = contextResponse.Split('\n');
+            
             int i = 0;
+            
             foreach (var line in lines)
             {
                 if (i == 1500)
                 {
-                    Data.time = double.Parse(line);
+                    Data.time = (double.Parse(line))/1000;
+                    i++;
                 }
-                else
+                else if (i<1500)
                 {
                     string[] measures = line.Split(',');
-                    Data.bar[i] = double.Parse(measures[0]);
-                    Data.hammer[i] = double.Parse(measures[1]);
+                    double m1 = double.Parse(measures[0]);
+                    double m2 = double.Parse(measures[1]);
+                    Data.bar[i] = m1;
+                    Data.hammer[i] = m2;
                     i++;
                 }
             }

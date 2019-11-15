@@ -35,6 +35,26 @@ namespace PracaInzynierska.Services
    
             return bufferABS;
         }
+        public double[] getRealValues(System.Numerics.Complex[] buffer, int numberOfSamples)
+        {
+            double[] realValues = new double[numberOfSamples];
+            for (int i = 0; i < numberOfSamples; i++)
+            {
+                realValues[i] = buffer[i].Real;
+            }
+
+            return realValues;
+        }
+        public double[] getImaginaryValues(System.Numerics.Complex[] buffer, int numberOfSamples)
+        {
+            double[] imaginaryValues = new double[numberOfSamples];
+            for (int i = 0; i < numberOfSamples; i++)
+            {
+                imaginaryValues[i] = buffer[i].Imaginary;
+            }
+
+            return imaginaryValues;
+        }
         public double[] normalization(double[] tab, int numberOfSamples)
         {
             double sum = 0;
@@ -57,13 +77,13 @@ namespace PracaInzynierska.Services
             {
                 if ((tp * i) > cutOff)
                 {
-                    Data.bar[i] = 0;
+                    Data.hammer[i] = 0;
                 }
                
             }
             return Data;
         }
-       public RecaivedData expFilter( RecaivedData Data, double lambda)
+        public RecaivedData expFilter( RecaivedData Data, double lambda)
         {
 
             double[] exp = new double[Data.numberOfSamples];
@@ -76,9 +96,32 @@ namespace PracaInzynierska.Services
             return Data;
             
         }
-        public void FunkcjaPrzejscia(double[] bar, double[] hammer, float freq, int numberOfSamples)//to bullshit to beda complex, czy do tego ida magnitude
+        public System.Numerics.Complex[] FRF(System.Numerics.Complex[] barfft, System.Numerics.Complex[] hammerfft,int numberOfSamples) 
         {
-
+            System.Numerics.Complex[] frf = new System.Numerics.Complex[numberOfSamples];
+            for (int i = 0; i < numberOfSamples; i++)
+            {
+                frf[i] = System.Numerics.Complex.Divide(barfft[i], hammerfft[i]);
+            }
+            return frf;
+        }
+        public System.Numerics.Complex[] Average(List<System.Numerics.Complex[]> list)
+        {
+            System.Numerics.Complex[] average= new System.Numerics.Complex[list[0].Length];
+            for (int i = 0; i < list[0].Length; i++)
+            {
+                double real = 0;
+                double imaginary=0;
+                foreach (var element in list)
+                {
+                    real += element[i].Real;
+                    imaginary += element[i].Imaginary;
+                }
+                real = real / list.Count;
+                imaginary = imaginary / list.Count;
+                average[i] = new System.Numerics.Complex(real, imaginary);
+            }
+            return average;
         }
     }
 }

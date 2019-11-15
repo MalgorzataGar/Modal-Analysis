@@ -10,7 +10,10 @@ namespace PracaInzynierska.Interfaces
         double[] normalization(double[] tab, int numberOfSamples);
         RecaivedData lowPassFilter( RecaivedData Data, double cutOff);
         RecaivedData expFilter( RecaivedData Data, double lambda);
+        double[] getRealValues(System.Numerics.Complex[] buffer, int numberOfSamples);
+        double[] getImaginaryValues(System.Numerics.Complex[] buffer, int numberOfSamples);
 
-       void FunkcjaPrzejscia(double[] bar, double[] hammer, float freq, int numberOfSamples);//czy freq i nos potzrebne count()
+        System.Numerics.Complex[] FRF(System.Numerics.Complex[] barfft, System.Numerics.Complex[] hammerfft, int numberOfSamples);
+        System.Numerics.Complex[] Average(List<System.Numerics.Complex[]> list);
     }
 }
