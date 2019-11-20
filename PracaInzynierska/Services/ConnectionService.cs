@@ -56,8 +56,9 @@ namespace PracaInzynierska.Services
         {
             RecaivedData Data = new RecaivedData();
 
-            string[] lines = contextResponse.Split('\n');
-            
+            //string[] lines = contextResponse.Split('\n');
+            string [] lines = File.ReadAllLines(@"C:\Users\USER\Desktop\WriteLines.txt");
+
             int i = 0;
             
             foreach (var line in lines)
@@ -72,8 +73,8 @@ namespace PracaInzynierska.Services
                     string[] measures = line.Split(',');
                     double m1 = double.Parse(measures[0]);
                     double m2 = double.Parse(measures[1]);
-                    Data.bar[i] = m1;
-                    Data.hammer[i] = m2;
+                    Data.bar[i] = (m1*6.1)/1000;
+                    Data.hammer[i] = (m2*6.1)/1000;
                     i++;
                 }
             }

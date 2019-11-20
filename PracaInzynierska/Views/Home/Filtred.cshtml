@@ -122,11 +122,23 @@ chartFrfI.render();
     <div id="FrfMagnitude" style="width: 100%; height: 300px;"></div>
 
     <form asp-controller="Home" method="post">
-      
-            <div class="form-group ">
-                <input type="submit" asp-action="Accept" class="btn btn-success" value="Przejdź dalej" />
+
+            <div class="form-inline">
+                <div class="form-group ">
+                    <label for="acceptance">Akceptacja wyników:</label>
+                    <select class="form-control" id="acceptance" name="acceptance">
+                        <option value='0'>Odrzuć pomiar</option>
+                        <option value='1' selected>Zaakceptuj wyniki</option>
+
+                    </select>
+                </div>
+             
             </div>
+    
+        <div class="form-group ">
+            <input type="submit" asp-action="Accept" class="btn btn-success" value="Przejdź dalej" />
         </div>
+
     </form>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>

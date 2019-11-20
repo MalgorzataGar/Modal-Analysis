@@ -9,109 +9,56 @@
     <script>
         window.onload = function () {
 
-            var chartfrf1 = new CanvasJS.Chart("frf1", {
+            var chartfrf1 = new CanvasJS.Chart("frf", {
                 theme: "light2", // "light1", "light2", "dark1", "dark2"
                 animationEnabled: true,
                 zoomEnabled: true,
                 exportEnabled: true,
                 title: {
-                    text: "Pierwsza frf"
+                    text: "Funkcja przejścia"
                 },
                 data: [{
                     type: "line",
-                    dataPoints:@Html.Raw(ViewBag.frf1)
+                    dataPoints:@Html.Raw(ViewBag.frf)
 	}]
             });
             chartfrf1.render();
-            var chartfrf2 = new CanvasJS.Chart("frf2", {
-                theme: "light2", // "light1", "light2", "dark1", "dark2"
-                animationEnabled: true,
-                zoomEnabled: true,
-                exportEnabled: true,
-                title: {
-                    text: "Druga frf"
-                },
-                data: [{
-                    type: "line",
-                    dataPoints: @Html.Raw(ViewBag.frf2)
-	}]
-            });
-            chartfrf2.render();
-            
-                var chartfrf3 = new CanvasJS.Chart("frf3", {
-                theme: "light2", // "light1", "light2", "dark1", "dark2"
-                animationEnabled: true,
-                zoomEnabled: true,
-                exportEnabled: true,
-                title: {
-                text: "Trzecia frf"
-                },
-                data: [{
-                type: "line",
-                    dataPoints: @Html.Raw(ViewBag.frf3)
-
-    }]
-                });
-
-            chartfrf3.render();
-               var chartfrf4 = new CanvasJS.Chart("frf4", {
-                theme: "light2", // "light1", "light2", "dark1", "dark2"
-                animationEnabled: true,
-                zoomEnabled: true,
-                exportEnabled: true,
-                title: {
-                text: "Trzecia frf"
-                },
-                data: [{
-                type: "line",
-                    dataPoints: @Html.Raw(ViewBag.frf4)
-
-    }]
-                });
-
-            chartfrf4.render();
-               var chartfrf5 = new CanvasJS.Chart("frf5", {
-                theme: "light2", // "light1", "light2", "dark1", "dark2"
-                animationEnabled: true,
-                zoomEnabled: true,
-                exportEnabled: true,
-                title: {
-                text: "Trzecia frf"
-                },
-                data: [{
-                type: "line",
-                    dataPoints: @Html.Raw(ViewBag.frf5)
-
-    }]
-                });
-
-            chartfrf5.render();
+ 
+  
    
         }
     </script>
 </head>
 <body>
-    <div id="frf1" style="width: 48%; height: 300px;display: inline-block;"></div>
-    <div id="frf2" style="width: 48%; height: 300px;display: inline-block;"></div>
-    <div id="frf3" style="width: 48%; height: 300px;display: inline-block;"></div>
-    <div id="frf4" style="width: 48%; height: 300px;display: inline-block;"></div>
-    <div id="frf5" style="width: 48%; height: 300px;display: inline-block;"></div>
-
+    <div id="frf" style="width: 100%; height: 300px;"></div>
 
     <form asp-controller="Home" method="post">
-        <div class="form-inline">
-            <div class="form-group ">
-                <label for="acceptance">Akceptacja wyników:</label>
-                <select class="form-control" id="acceptance" name="acceptance">
-                    <option value='0'>Odrzuć pomiar</option>
-                    <option value='1' selected>Zaakceptuj wyniki</option>
-
-                </select>
-            </div>
-            <div class="form-group ">
-                <Button Class="btn-grey" type="button" data-dismiss="modal">Koniec</Button>
-            </div>
+        <text>Wprowadz czestwoliwosci w tysiącach</text>
+        <div class="form-group ">
+            <label for="freq1" class="col-md-2 control-label">Piewrsza częstotliwość rezonansowa:</label>
+            <input class="form-control" id="freq1" name="freq1" placeholder="Podaj czestotliwość" type="text" value="@ViewData["freq1"]" />
         </div>
+        <div class="form-group ">
+            <label for="freq2" class="col-md-2 control-label">Druga częstotliwość rezonansowa:</label>
+            <input class="form-control" id="freq2" name="freq2" placeholder="Podaj czestotliwość" type="text" value="@ViewData["freq2"]" />
+        </div>
+        <div class="form-group ">
+            <label for="freq3" class="col-md-2 control-label">Trzecia częstotliwość rezonansowa:</label>
+            <input class="form-control" id="freq3" name="freq3" placeholder="Podaj czestotliwość" type="text" value="@ViewData["freq3"]" />
+        </div>
+        <div class="form-group ">
+            <label for="freq4" class="col-md-2 control-label">Czwarta częstotliwość rezonansowa:</label>
+            <input class="form-control" id="freq4" name="freq4" placeholder="Podaj czestotliwość" type="text" value="@ViewData["freq4"]" />
+        </div>
+        <div class="form-group ">
+            <label for="freq5" class="col-md-2 control-label">Piąta częstotliwość rezonansowa:</label>
+            <input class="form-control" id="freq5" name="freq5" placeholder="Podaj czestotliwość" type="text" value="@ViewData["freq5"]" />
+        </div>
+        <div class="form-group ">
+            <input type="submit" asp-action="Resonance" class="btn btn-success" value="Wyświetl ugięcia" />
+        </div>
+
+
     </form>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>

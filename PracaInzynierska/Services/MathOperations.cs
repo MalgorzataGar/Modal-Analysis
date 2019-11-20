@@ -123,5 +123,70 @@ namespace PracaInzynierska.Services
             }
             return average;
         }
+        public  void bendingArrays (ref BendModel bend, double [] freqtable,List<System.Numerics.Complex[]> frfFinal, double freqTotat)
+        {
+            double freq = freqTotat / frfFinal[0].Length;
+            for (int i = 0; i < freqtable.Length; i++)//petla po czestotliwoscisch
+            {
+                double currentFreq = freqtable[i];
+
+                int min = 0; ;
+                double temp = 0;
+                for (int j = 0; j < frfFinal[0].Length; j++)//wybor min czest
+                {
+                    if (temp == 0)
+                    {
+                        temp = System.Math.Abs(j * freq - currentFreq);
+                    }
+                    else
+                    {
+                        if (temp > System.Math.Abs(j * freq - currentFreq))
+                        {
+                            temp = System.Math.Abs(j * freq - currentFreq);
+                        }
+                        else
+                        {
+                            min = j;
+                            break;
+                        }
+                    }
+
+                }
+                switch (i+1)
+                {
+                    case 1:
+                        for (int z = 0; z < bend.freaArray1.Length; z++)
+                        {
+                            bend.freaArray1[z] = (frfFinal[z])[min].Imaginary;
+                        }
+                        break;
+                    case 2:
+                        for (int z = 0; z < bend.freaArray1.Length; z++)
+                        {
+                            bend.freaArray2[z] = (frfFinal[z])[min].Imaginary;
+                        }
+                        break;
+                    case 3:
+                        for (int z = 0; z < bend.freaArray1.Length; z++)
+                        {
+                            bend.freaArray3[z] = (frfFinal[z])[min].Imaginary;
+                        }
+                        break;
+                    case 4:
+                        for (int z = 0; z < bend.freaArray1.Length; z++)
+                        {
+                            bend.freaArray4[z] = (frfFinal[z])[min].Imaginary;
+                        }
+                        break;
+                    case 5:
+                        for (int z = 0; z < bend.freaArray1.Length; z++)
+                        {
+                            bend.freaArray5[z] = (frfFinal[z])[min].Imaginary;
+                        }
+                        break;
+                }
+            }
+            return;
+        }
     }
 }

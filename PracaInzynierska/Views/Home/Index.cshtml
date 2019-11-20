@@ -11,7 +11,7 @@
 
     <p></p>
     <form asp-controller="Home" method="post">
-        @if (ViewBag.currentMeasure == -1 && ViewBag.currentPoint==1)
+        @if (ViewBag.currentMeasure == -1 && ViewBag.currentPoint == 1)
         {
             <ul>
                 <li>
@@ -20,6 +20,7 @@
                 </li>
             </ul>
             <div class="form-group ">
+                
                 <label for="numberOfTestsPerPoint">Ilość pomiarów na punkt:</label>
                 <select class="form-control" id="numberOfTestsPerPoint" name="numberOfTestsPerPoint">
                     <option value='2'>2</option>
@@ -28,8 +29,32 @@
                     <option value='5' selected>5</option>
                     <option value='6'>6</option>
                 </select>
-            </div>//opcja zrobienia róznych view
-           
+            </div>
+                <div class="form-group ">
+                
+                <label for="numberOfPoints">Ilość mierzonych punktów:</label>
+                <select class="form-control" id="numberOfPoints" name="numberOfPoints">
+                    <option value='2'>2</option>
+                    <option value='3'>3</option>
+                    <option value='4'>4</option>
+                    <option value='5' selected>5</option>
+                    <option value='6'>6</option>
+                </select>
+            </div>
+            <div class="form-group ">
+                <label for="firstMounting">Pierwsze mocowanie:</label>
+                <select class="form-control" id="firstMounting" name="firstMounting">
+                    <option value='0' selected>początek belki</option>
+                    <option value='1'>koniec belki</option>
+                </select>
+            </div>
+            <div class="form-group ">
+                <label for="secondMounting">Drugie mocowanie:</label>
+                <select class="form-control" id="secondMounting" name="secondMounting">
+                    <option value='-1' selected>brak</option>
+                    <option value='0'>drugi koniec</option>
+                </select>
+            </div>
 
         }
         else
