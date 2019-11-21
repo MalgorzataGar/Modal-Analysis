@@ -93,7 +93,7 @@ namespace PracaInzynierska.Controllers
             string filename = "myFile_" + (int)elapsedSpan.TotalSeconds + ".txt";
             string str = "{'filename': '" + filename + "'}";
             JObject configJson = JObject.Parse(str);
-            //ConnectionService.HandleConnection(configJson).Wait();
+            ConnectionService.HandleConnection(configJson).Wait();
             recaivedDatas = ConnectionService.GetDataFromString();
             double[] bar_raw = recaivedDatas.bar;
             double[] hammer_raw = recaivedDatas.hammer;
@@ -234,7 +234,7 @@ namespace PracaInzynierska.Controllers
             List<DataPoint> freq4 = new List<DataPoint>();
             List<DataPoint> freq5 = new List<DataPoint>();
             MathOperations.bendingArrays(ref bend, freqtable, frfFinal, freq);
-            bend.resonanse = freqtable;
+            bend.resonance = freqtable;
             freq1 = Graph.fillBendingPoints(bend.freaArray1, indexOfMounting);
             ViewBag.freq1 = JsonConvert.SerializeObject(freq1);
             freq2 = Graph.fillBendingPoints(bend.freaArray2, indexOfMounting);

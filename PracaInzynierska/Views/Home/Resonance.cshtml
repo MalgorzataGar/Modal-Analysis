@@ -1,0 +1,216 @@
+﻿@model PracaInzynierska.Models.BendModel
+@{
+    ViewData["Title"] = "Resonance";
+}
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script>
+        window.onload = function () {
+
+            var chartfreq1 = new CanvasJS.Chart("freq1", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                axisX: {
+      	            interval: 1
+                },
+                zoomEnabled: true,
+                exportEnabled: true,
+                title: {
+                    text: "Ugięcie dla pierwszej częstotliwości"
+                },
+                data: [{
+                    type: "spline",
+                    dataPoints:@Html.Raw(ViewBag.freq1)
+	        }]      
+            });
+            chartfreq1.render();
+            var chartfreq2 = new CanvasJS.Chart("freq2", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                axisX: {
+      	            interval: 1
+                },
+                exportEnabled: true,
+                title: {
+                    text: "Ugięcie dla drugiej częstotliwości"
+                },
+                data: [{
+                    type: "spline",
+                    dataPoints:@Html.Raw(ViewBag.freq2)
+	}]
+            });
+            chartfreq2.render();
+            var chartfreq3 = new CanvasJS.Chart("freq3", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                axisX: {
+                 	interval: 1
+                 },
+                exportEnabled: true,
+                title: {
+                    text: "Ugięcie dla tzreciej częstotliowści"
+                },
+                data: [{
+                    type: "spline",
+                    dataPoints:@Html.Raw(ViewBag.freq3)
+	}]
+            });
+            chartfreq3.render();
+            var chartfreq4 = new CanvasJS.Chart("freq4", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                axisX: {
+                	interval: 1
+                  },
+                exportEnabled: true,
+                title: {
+                    text: "Ugięcie dla czwrtej częstotliowści"
+                },
+                data: [{
+                    type: "spline",
+                    dataPoints:@Html.Raw(ViewBag.freq4)
+	}]
+            });
+            chartfreq4.render();
+            var chartfreq5 = new CanvasJS.Chart("freq5", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                axisX: {
+                  	interval: 1
+                 },
+                exportEnabled: true,
+                title: {
+                    text: "Ugięcie dla piątej częstotliowści"
+                },
+                data: [{
+                    type: "spline",
+                    dataPoints:@Html.Raw(ViewBag.freq5)
+	}]
+            });
+            chartfreq5.render();
+
+
+        }
+    </script>
+</head>
+<body>
+
+    <text>Ugięcie dla pierwszej częstotliwości równej @Model.resonance[0]</text>
+    <div id="freq1" style="width: 50%; height: 300px;"></div>
+    <table class="table">
+        <thead>
+            <tr>
+                @for (int k = 1; k < Model.numberOfPoints+1; k++)
+                {
+                    <th scope="col">@k</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @for (int k = 0; k < Model.numberOfPoints; k++)
+                {
+                    <td> @Model.freaArray1[k] </td>
+
+                }
+            </tr>
+        </tbody>
+    </table>
+    <text>Ugięcie dla drugiej częstotliwości równej @Model.resonance[1]</text>
+    <div id="freq2" style="width: 50%; height: 300px;"></div>
+    <table class="table">
+        <thead>
+            <tr>
+                @for (int k = 1; k < Model.numberOfPoints+1; k++)
+                {
+                    <th scope="col">@k</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @for (int k = 1; k < Model.numberOfPoints+1; k++)
+                {
+                    <td> @Model.freaArray2[k] </td>
+
+                }
+            </tr>
+        </tbody>
+    </table>
+    <text>Ugięcie dla tzreciej częstotliwości równej @Model.resonance[2]</text>
+    <div id="freq3" style="width: 50%; height: 300px;"></div>
+    <table class="table">
+        <thead>
+            <tr>
+                @for (int k = 1; k < Model.numberOfPoints+1; k++)
+                {
+                    <th scope="col">@k</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @for (int k = 0; k < Model.numberOfPoints; k++)
+                {
+                    <td> @Model.freaArray3[k] </td>
+
+                }
+            </tr>
+        </tbody>
+    </table>
+    <text>Ugięcie dla czwartej częstotliwości równej @Model.resonance[3]</text>
+    <div id="freq4" style="width: 50%; height: 300px;"></div>
+    <table class="table">
+        <thead>
+            <tr>
+                @for (int k = 1; k < Model.numberOfPoints+1; k++)
+                {
+                    <th scope="col">@k</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @for (int k = 0; k < Model.numberOfPoints; k++)
+                {
+                    <td> @Model.freaArray4[k] </td>
+
+                }
+            </tr>
+        </tbody>
+    </table>
+    <text>Ugięcie dla piątej częstotliwości równej @Model.resonance[4]</text>
+    <div id="freq5" style="width: 50%; height: 300px;"></div>
+    <table class="table">
+        <thead>
+            <tr>
+                @for (int k = 1; k < Model.numberOfPoints+1; k++)
+                {
+                    <th scope="col">@k</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @for (int k = 0; k < Model.numberOfPoints; k++)
+                {
+                    <td> @Model.freaArray5[k] </td>
+
+                }
+            </tr>
+        </tbody>
+    </table>
+
+
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+
+</body>
+</html>

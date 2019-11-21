@@ -56,8 +56,8 @@ namespace PracaInzynierska.Services
         {
             RecaivedData Data = new RecaivedData();
 
-            //string[] lines = contextResponse.Split('\n');
-            string [] lines = File.ReadAllLines(@"C:\Users\USER\Desktop\WriteLines.txt");
+            string[] lines = contextResponse.Split('\n');
+           // string [] lines = File.ReadAllLines(@"C:\Users\USER\Desktop\WriteLines.txt");
 
             int i = 0;
             

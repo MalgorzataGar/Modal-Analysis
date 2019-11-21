@@ -15,11 +15,11 @@ namespace PracaInzynierska.Models
             freaArray3 = new double[numberOfPoints];
             freaArray4 = new double[numberOfPoints];
             freaArray5 = new double[numberOfPoints];
-            resonanse = new double[5];
+            resonance = new double[5];
         }
 
-        int numberOfPoints;
-        public double[] resonanse { get; set; }
+        public int numberOfPoints { get; set; }
+        public double[] resonance { get; set; }
         public double [] freaArray1 {get;set;}
         public double[] freaArray2 { get; set; }
         public double[] freaArray3 { get; set; }
