@@ -1,3 +1,4 @@
+
 #include <ESP8266WiFi.h>
 #include <ArduinoJson.h>
 #include <WiFiClient.h>
@@ -11,8 +12,8 @@ LSM303 hammer;
 
 char filename[20];
 
-const char *ssid = "WLAN1-002093";
-const char *password = "7277AF0C32C26AC";
+const char *ssid = "HUAWEI P20";
+const char *password = "38e9d6ee435d";
 WiFiServer server(80);
 const int output = D0;
 String header;
@@ -161,7 +162,7 @@ void WriteToFile()
        hammer.read();
        f.print(bar.a.z);
        f.print(',');
-       f.print(hammer.a.z);
+       f.print(hammer.a.x);
        f.print('\n');
  }
       currentTime = millis();

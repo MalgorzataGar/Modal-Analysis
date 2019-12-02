@@ -93,8 +93,12 @@ namespace PracaInzynierska.Controllers
             string filename = "myFile_" + (int)elapsedSpan.TotalSeconds + ".txt";
             string str = "{'filename': '" + filename + "'}";
             JObject configJson = JObject.Parse(str);
-            ConnectionService.HandleConnection(configJson).Wait();
+           // ConnectionService.HandleConnection(configJson).Wait();
             recaivedDatas = ConnectionService.GetDataFromString();
+            string filenameB = "bar" + DateTime.Now.ToString("HH_mm_ss");
+            string filenameH = "hammer" + DateTime.Now.ToString("HH_mm_ss");
+            ConnectionService.SaveToFile(filenameB, recaivedDatas.bar, recaivedDatas.time);
+            ConnectionService.SaveToFile(filenameH, recaivedDatas.hammer, recaivedDatas.time);
             double[] bar_raw = recaivedDatas.bar;
             double[] hammer_raw = recaivedDatas.hammer;
             double[] bar = MathOperations.normalization(bar_raw, recaivedDatas.numberOfSamples);
@@ -106,6 +110,14 @@ namespace PracaInzynierska.Controllers
             List<DataPoint> pointsListHammer = Graph.fillDataPoints(hammer, recaivedDatas.numberOfSamples, (float)recaivedDatas.time);
             ViewBag.TimeBar = JsonConvert.SerializeObject(pointsListBar);
             ViewBag.TimeHammer = JsonConvert.SerializeObject(pointsListHammer);
+            if (HttpContext.Session.GetString("lambda") == null)
+            {
+                ViewBag.isLambdaSet = 0;
+            }
+            else
+            {
+                ViewBag.isLambdaSet = 1;
+            }
             return View("DataTime");
         }
 
@@ -115,10 +127,20 @@ namespace PracaInzynierska.Controllers
             RecaivedData recaivedDatas = JsonConvert.DeserializeObject<RecaivedData>(HttpContext.Session.GetString("recaivedDatas"));
             double[] bar = recaivedDatas.bar;
             double[] hammer = recaivedDatas.bar;
-            double lambda = double.Parse(HttpContext.Request.Form["lambda"].ToString());
+            double lambda;
+            if (HttpContext.Session.GetString("lambda") == null)
+            {
+                lambda = double.Parse(HttpContext.Request.Form["lambda"].ToString());
+                HttpContext.Session.SetString("lambda", lambda.ToString());
+            }
+            else lambda = double.Parse(HttpContext.Session.GetString("lambda"));
+            
             double cutOff = double.Parse(HttpContext.Request.Form["cutOff"].ToString());
-            recaivedDatas=MathOperations.expFilter(recaivedDatas, lambda);
+            double offset = double.Parse(HttpContext.Request.Form["offset"].ToString());
             recaivedDatas= MathOperations.lowPassFilter(recaivedDatas, cutOff);
+            recaivedDatas.bar = MathOperations.offset(recaivedDatas.bar, recaivedDatas.time, offset);
+            recaivedDatas.hammer = MathOperations.offset(recaivedDatas.hammer, recaivedDatas.time, offset);
+            recaivedDatas = MathOperations.expFilter(recaivedDatas, lambda);
             List<DataPoint> filtredBar = Graph.fillDataPoints(recaivedDatas.bar, recaivedDatas.numberOfSamples ,(float)recaivedDatas.time);
             List<DataPoint> filtredHammer = Graph.fillDataPoints(recaivedDatas.hammer,recaivedDatas.numberOfSamples , (float)recaivedDatas.time);
             ViewBag.FiltredBar = JsonConvert.SerializeObject(filtredBar);
@@ -127,8 +149,8 @@ namespace PracaInzynierska.Controllers
             System.Numerics.Complex[] bufferHammer = MathOperations.FFTImp(recaivedDatas.hammer, (float)recaivedDatas.time, recaivedDatas.numberOfSamples);
             double[] fftBar = MathOperations.absComplexToDouble(bufferBar, recaivedDatas.numberOfSamples);
             double[] fftHammer = MathOperations.absComplexToDouble(bufferHammer, recaivedDatas.numberOfSamples);
-            float fp = recaivedDatas.numberOfSamples / (float)recaivedDatas.time;
-            float freq = fp * recaivedDatas.numberOfSamples;
+            float freq = recaivedDatas.numberOfSamples / (float)recaivedDatas.time;
+            //float freq = fp * recaivedDatas.numberOfSamples;
             HttpContext.Session.SetString("freq", JsonConvert.SerializeObject(freq));
             List<DataPoint> freqPointsBar = Graph.fillDataPoints(fftBar, (recaivedDatas.numberOfSamples / 2), freq);
             ViewBag.FreqBar = JsonConvert.SerializeObject(freqPointsBar);
@@ -166,6 +188,10 @@ namespace PracaInzynierska.Controllers
                 if (currentMeasure == numberOfTestsPerPoint-1)
                 {
                     System.Numerics.Complex[] frfAverage = MathOperations.Average(frfMeasures);
+                    frfAverage = MathOperations.movingAverage(frfAverage, 7);
+                    string filename = "frf" + currentPoint;
+                    float freq = JsonConvert.DeserializeObject<float>(HttpContext.Session.GetString("freq"));
+                    ConnectionService.SaveToFile(filename, frfAverage, freq);
                     frfFinal.Add(frfAverage);
                     frfMeasures.Clear();
                     currentMeasure = -1;
@@ -177,6 +203,10 @@ namespace PracaInzynierska.Controllers
                     }
                     else
                     {
+                        if (numberOfPoints == 10)
+                        { 
+                            return RedirectToAction("Comparison");
+                        }
                         return RedirectToAction("Final");
                     }
                 }
@@ -191,6 +221,46 @@ namespace PracaInzynierska.Controllers
             HttpContext.Session.SetInt32("currentPoint", currentPoint);
             return RedirectToAction("Index");
         }
+        public IActionResult Comparison()
+        {
+            var numberOfPoints = HttpContext.Session.GetInt32("numberOfPoints");
+            double[] frf1, frf2, frf3, frf4, frf5, frf6, frf7, frf8, frf9, frf10;
+            List<DataPoint> frfMagnitudePoints = new List<DataPoint>();
+            float freq = JsonConvert.DeserializeObject<float>(HttpContext.Session.GetString("freq"));
+            List<System.Numerics.Complex[]> frfFinal = JsonConvert.DeserializeObject<List<System.Numerics.Complex[]>>(HttpContext.Session.GetString("frfFinal"));
+             frf1 = MathOperations.absComplexToDouble(frfFinal[0], frfFinal[0].Length);
+            frfMagnitudePoints = Graph.fillDataPoints(frf1, (frfFinal[0].Length) / 2, freq);
+            ViewBag.frf1 = JsonConvert.SerializeObject(frfMagnitudePoints);
+            frf2 = MathOperations.absComplexToDouble(frfFinal[1], frfFinal[0].Length);
+            frfMagnitudePoints = Graph.fillDataPoints(frf2, (frfFinal[0].Length) / 2, freq);
+            ViewBag.frf2 = JsonConvert.SerializeObject(frfMagnitudePoints);
+            frf3 = MathOperations.absComplexToDouble(frfFinal[2], frfFinal[0].Length);
+            frfMagnitudePoints = Graph.fillDataPoints(frf3, (frfFinal[0].Length) / 2, freq);
+            ViewBag.frf3 = JsonConvert.SerializeObject(frfMagnitudePoints);
+            frf4 = MathOperations.absComplexToDouble(frfFinal[3], frfFinal[0].Length);
+            frfMagnitudePoints = Graph.fillDataPoints(frf4, (frfFinal[0].Length) / 2, freq);
+            ViewBag.frf4 = JsonConvert.SerializeObject(frfMagnitudePoints);
+            frf5 = MathOperations.absComplexToDouble(frfFinal[4], frfFinal[0].Length);
+            frfMagnitudePoints = Graph.fillDataPoints(frf5, (frfFinal[0].Length) / 2, freq);
+            ViewBag.frf5 = JsonConvert.SerializeObject(frfMagnitudePoints);
+            frf6 = MathOperations.absComplexToDouble(frfFinal[5], frfFinal[0].Length);
+            frfMagnitudePoints = Graph.fillDataPoints(frf6, (frfFinal[0].Length) / 2, freq);
+            ViewBag.frf6 = JsonConvert.SerializeObject(frfMagnitudePoints);
+            frf7 = MathOperations.absComplexToDouble(frfFinal[6], frfFinal[0].Length);
+            frfMagnitudePoints = Graph.fillDataPoints(frf7, (frfFinal[0].Length) / 2, freq);
+            ViewBag.frf7 = JsonConvert.SerializeObject(frfMagnitudePoints);
+            frf8 = MathOperations.absComplexToDouble(frfFinal[7], frfFinal[0].Length);
+            frfMagnitudePoints = Graph.fillDataPoints(frf8, (frfFinal[0].Length) / 2, freq);
+            ViewBag.frf8 = JsonConvert.SerializeObject(frfMagnitudePoints);
+            frf9 = MathOperations.absComplexToDouble(frfFinal[8], frfFinal[0].Length);
+            frfMagnitudePoints = Graph.fillDataPoints(frf9, (frfFinal[0].Length) / 2, freq);
+            ViewBag.frf9 = JsonConvert.SerializeObject(frfMagnitudePoints);
+            frf10 = MathOperations.absComplexToDouble(frfFinal[9], frfFinal[0].Length);
+            frfMagnitudePoints = Graph.fillDataPoints(frf10, (frfFinal[0].Length) / 2, freq);
+            ViewBag.frf10 = JsonConvert.SerializeObject(frfMagnitudePoints);
+
+            return View();
+        }
         public IActionResult Final()
         {
             var numberOfPoints = HttpContext.Session.GetInt32("numberOfPoints");
@@ -199,6 +269,7 @@ namespace PracaInzynierska.Controllers
             float freq = JsonConvert.DeserializeObject<float>(HttpContext.Session.GetString("freq"));
             List<System.Numerics.Complex[]> frfFinal = JsonConvert.DeserializeObject<List<System.Numerics.Complex[]>>(HttpContext.Session.GetString("frfFinal"));
             System.Numerics.Complex[] frfAverage = MathOperations.Average(frfFinal);//obliczaie ostatecznej frf
+            ConnectionService.SaveToFile("final", frfAverage, freq);
             frfMagnitude = MathOperations.absComplexToDouble(frfAverage, frfAverage.Length);
             frfMagnitudePoints  = Graph.fillDataPoints(frfMagnitude, (frfAverage.Length) / 2, freq);
             ViewBag.frf = JsonConvert.SerializeObject(frfMagnitudePoints);
@@ -219,7 +290,7 @@ namespace PracaInzynierska.Controllers
                 d = double.TryParse(HttpContext.Request.Form[name].ToString(), out temp );
                 if(d)
                 {
-                    freqtable[i] = temp*1000;
+                    freqtable[i] = temp;
                 }
                 else
                 {

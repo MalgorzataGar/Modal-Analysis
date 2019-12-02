@@ -1,10 +1,5 @@
 
 
-@{
-    ViewData["Title"] = "Start";
-
-}
-
 
 
 <div class="row">
@@ -13,16 +8,18 @@
     <form asp-controller="Home" method="post">
         @if (ViewBag.currentMeasure == -1 && ViewBag.currentPoint == 1)
         {
-            <ul>
-                <li>
+            <div>
+                <p class="font-weight-light">
                     W celu przeprowadzenia analizy wprowadź ilość pomiarów na punkt a następnie naciśnij START.
-                    Zostanie uruchomiony system pomiarowy. Po zapaleniu diody w ciągu 3 sekund rozpocznie się pomiar
-                </li>
-            </ul>
+                    Zostanie uruchomiony system pomiarowy. Po zapaleniu diody w ciągu 5 sekund rozpocznie się pomiar.
+                </p>
+            </div>
+
             <div class="form-group ">
-                
+
                 <label for="numberOfTestsPerPoint">Ilość pomiarów na punkt:</label>
                 <select class="form-control" id="numberOfTestsPerPoint" name="numberOfTestsPerPoint">
+                    <option value='1'>1</option>
                     <option value='2'>2</option>
                     <option value='3'>3</option>
                     <option value='4'>4</option>
@@ -30,8 +27,8 @@
                     <option value='6'>6</option>
                 </select>
             </div>
-                <div class="form-group ">
-                
+            <div class="form-group ">
+
                 <label for="numberOfPoints">Ilość mierzonych punktów:</label>
                 <select class="form-control" id="numberOfPoints" name="numberOfPoints">
                     <option value='2'>2</option>
@@ -39,6 +36,7 @@
                     <option value='4'>4</option>
                     <option value='5' selected>5</option>
                     <option value='6'>6</option>
+                    <option value='10'>10</option>
                 </select>
             </div>
             <div class="form-group ">
@@ -59,9 +57,15 @@
         }
         else
         {
-            <ul>
-                <li>Aby rozpocząć kolejny pomiar nasciśnij START</li>
-            </ul>
+            <div>
+                <p class="font-weight-light">
+                    To @(ViewBag.currentMeasure + 2). pomiar dla punktu @ViewBag.currentPoint.
+                </p>
+                <p>
+                    Aby rozpocząć kolejny pomiar nasciśnij START
+                </p>
+            </div>
+
         }
 
         <div class="form-group ">

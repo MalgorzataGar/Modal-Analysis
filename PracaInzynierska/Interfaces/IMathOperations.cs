@@ -16,5 +16,7 @@ namespace PracaInzynierska.Interfaces
         System.Numerics.Complex[] FRF(System.Numerics.Complex[] barfft, System.Numerics.Complex[] hammerfft, int numberOfSamples);
         System.Numerics.Complex[] Average(List<System.Numerics.Complex[]> list);
         void bendingArrays(ref BendModel bend, double[] freqtable, List<System.Numerics.Complex[]> frfFinal, double freq);
+        System.Numerics.Complex[] movingAverage(System.Numerics.Complex[] table, int windowSize);
+        double[] offset(double[] table, double time, double offset);
     }
 }

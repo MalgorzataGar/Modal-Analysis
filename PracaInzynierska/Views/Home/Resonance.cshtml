@@ -53,7 +53,7 @@
                  },
                 exportEnabled: true,
                 title: {
-                    text: "Ugięcie dla tzreciej częstotliowści"
+                    text: "Ugięcie dla trzeciej częstotliowści"
                 },
                 data: [{
                     type: "spline",
@@ -70,7 +70,7 @@
                   },
                 exportEnabled: true,
                 title: {
-                    text: "Ugięcie dla czwrtej częstotliowści"
+                    text: "Ugięcie dla czwartej częstotliowści"
                 },
                 data: [{
                     type: "spline",
@@ -102,12 +102,16 @@
 </head>
 <body>
 
-    <text>Ugięcie dla pierwszej częstotliwości równej @Model.resonance[0]</text>
+    <div>
+        <p class="font-weight-light">
+            Ugięcie dla pierwszej częstotliwości równej @Model.resonance[0]
+        </p>
+    </div>
     <div id="freq1" style="width: 50%; height: 300px;"></div>
     <table class="table">
         <thead>
             <tr>
-                @for (int k = 1; k < Model.numberOfPoints+1; k++)
+                @for (int k = 1; k < Model.numberOfPoints + 1; k++)
                 {
                     <th scope="col">@k</th>
                 }
@@ -117,18 +121,23 @@
             <tr>
                 @for (int k = 0; k < Model.numberOfPoints; k++)
                 {
-                    <td> @Model.freaArray1[k] </td>
+                    <td> @Model.freaArray1[k].ToString("0.00") </td>
 
                 }
             </tr>
         </tbody>
     </table>
-    <text>Ugięcie dla drugiej częstotliwości równej @Model.resonance[1]</text>
+    <div>
+        <p class="font-weight-light">
+            Ugięcie dla drugiej częstotliwości równej @Model.resonance[1]
+        </p>
+    </div>
+    <text></text>
     <div id="freq2" style="width: 50%; height: 300px;"></div>
     <table class="table">
         <thead>
             <tr>
-                @for (int k = 1; k < Model.numberOfPoints+1; k++)
+                @for (int k = 1; k < Model.numberOfPoints + 1; k++)
                 {
                     <th scope="col">@k</th>
                 }
@@ -136,20 +145,25 @@
         </thead>
         <tbody>
             <tr>
-                @for (int k = 1; k < Model.numberOfPoints+1; k++)
+                @for (int k = 0; k < Model.numberOfPoints; k++)
                 {
-                    <td> @Model.freaArray2[k] </td>
+                    <td> @Model.freaArray2[k].ToString("0.00") </td>
 
                 }
             </tr>
         </tbody>
     </table>
-    <text>Ugięcie dla tzreciej częstotliwości równej @Model.resonance[2]</text>
+    <div>
+        <p class="font-weight-light">
+            Ugięcie dla trzeciej częstotliwości równej @Model.resonance[2]
+        </p>
+    </div>
+
     <div id="freq3" style="width: 50%; height: 300px;"></div>
     <table class="table">
         <thead>
             <tr>
-                @for (int k = 1; k < Model.numberOfPoints+1; k++)
+                @for (int k = 1; k < Model.numberOfPoints + 1; k++)
                 {
                     <th scope="col">@k</th>
                 }
@@ -159,18 +173,23 @@
             <tr>
                 @for (int k = 0; k < Model.numberOfPoints; k++)
                 {
-                    <td> @Model.freaArray3[k] </td>
+                    <td> @Model.freaArray3[k].ToString("0.00") </td>
 
                 }
             </tr>
         </tbody>
     </table>
-    <text>Ugięcie dla czwartej częstotliwości równej @Model.resonance[3]</text>
+    <div>
+        <p class="font-weight-light">
+            Ugięcie dla czwartej częstotliwości równej @Model.resonance[3]
+        </p>
+    </div>
+
     <div id="freq4" style="width: 50%; height: 300px;"></div>
     <table class="table">
         <thead>
             <tr>
-                @for (int k = 1; k < Model.numberOfPoints+1; k++)
+                @for (int k = 1; k < Model.numberOfPoints + 1; k++)
                 {
                     <th scope="col">@k</th>
                 }
@@ -180,18 +199,22 @@
             <tr>
                 @for (int k = 0; k < Model.numberOfPoints; k++)
                 {
-                    <td> @Model.freaArray4[k] </td>
+                    <td> @Model.freaArray4[k].ToString("0.00") </td>
 
                 }
             </tr>
         </tbody>
     </table>
-    <text>Ugięcie dla piątej częstotliwości równej @Model.resonance[4]</text>
+    <div>
+        <p class="font-weight-light">
+            Ugięcie dla piątej częstotliwości równej @Model.resonance[4]
+        </p>
+    </div>
     <div id="freq5" style="width: 50%; height: 300px;"></div>
     <table class="table">
         <thead>
             <tr>
-                @for (int k = 1; k < Model.numberOfPoints+1; k++)
+                @for (int k = 1; k < Model.numberOfPoints + 1; k++)
                 {
                     <th scope="col">@k</th>
                 }
@@ -201,7 +224,7 @@
             <tr>
                 @for (int k = 0; k < Model.numberOfPoints; k++)
                 {
-                    <td> @Model.freaArray5[k] </td>
+                    <td> @Model.freaArray5[k].ToString("0.00") </td>
 
                 }
             </tr>

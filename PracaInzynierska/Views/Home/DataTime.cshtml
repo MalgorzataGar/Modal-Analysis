@@ -1,9 +1,4 @@
 ﻿
-@{
-    ViewData["Title"] = "DataTime";
-}
-
-<h2>Filtred</h2>
 
 <!DOCTYPE HTML>
 <html>
@@ -21,8 +16,7 @@ var chartTB = new CanvasJS.Chart("timebar", {
 	},
 	data: [{
 		type: "line",
-		dataPoints: @Html.Raw(ViewBag.TimeBar)
-	}]
+		dataPoints: @Html.Raw(ViewBag.TimeBar)}]
 });
     chartTB.render();
     var chartTH = new CanvasJS.Chart("timehammer", {
@@ -35,8 +29,7 @@ var chartTB = new CanvasJS.Chart("timebar", {
 	},
 	data: [{
 		type: "line",
-		dataPoints: @Html.Raw(ViewBag.TimeHammer)
-	}]
+		dataPoints: @Html.Raw(ViewBag.TimeHammer)}]
 });
 
 chartTH.render();
@@ -47,19 +40,26 @@ chartTH.render();
     <div id="timebar" style="width: 45%; height: 300px;display: inline-block;"></div>
     <div id="timehammer" style="width: 45%; height: 300px;display: inline-block;"></div>
     <form asp-controller="Home" method="post">
-        
+
+        @if (ViewBag.isLambdaSet == 0)
+        {
             <div class="form-group ">
                 <label for="lambda" class="col-md-2 control-label">Lambda:</label>
                 <input class="form-control" id="lambda" name="lambda" placeholder="Podaj lambdę" type="text" value="@ViewData["lambda"]" />
             </div>
-            <div class="form-group ">
-                <label for="cutOff" class="col-md-2 control-label">Częstotliwość odcięcia:</label>
-                <input class="form-control" id="cutOff" name="cutOff" type="text" placeholder="Podaj częstotliwość odcięcia" value="@ViewData["cutOff"]" />
-            </div>
-            <div class="form-group ">
-                <input type="submit" asp-action="Filtration" class="btn btn-success" value="Filtracja" />
-            </div>
-        
+        }
+        <div class="form-group ">
+            <label for="cutOff" class="col-md-2 control-label">Częstotliwość odcięcia:</label>
+            <input class="form-control" id="cutOff" name="cutOff" type="text" placeholder="Podaj częstotliwość odcięcia" value="@ViewData["cutOff"]" />
+        </div>
+        <div class="form-group ">
+            <label for="offset" class="col-md-2 control-label">Przesuń wykres:</label>
+            <input class="form-control" id="offset" name="offset" type="text" placeholder="Podaj offset" value="@ViewData["offset"]" />
+        </div>
+        <div class="form-group ">
+            <input type="submit" asp-action="Filtration" class="btn btn-success" value="Filtracja" />
+        </div>
+
     </form>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>

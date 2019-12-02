@@ -19,8 +19,7 @@
                 },
                 data: [{
                     type: "line",
-                    dataPoints:@Html.Raw(ViewBag.frf)
-	}]
+                    dataPoints:@Html.Raw(ViewBag.frf)}]
             });
             chartfrf1.render();
  
@@ -33,7 +32,11 @@
     <div id="frf" style="width: 100%; height: 300px;"></div>
 
     <form asp-controller="Home" method="post">
-        <text>Wprowadz czestwoliwosci w tysiącach</text>
+        <div>
+            <p class="font-weight-light">
+                Wprowadź częstotliwość
+            </p>
+        </div>
         <div class="form-group ">
             <label for="freq1" class="col-md-2 control-label">Piewrsza częstotliwość rezonansowa:</label>
             <input class="form-control" id="freq1" name="freq1" placeholder="Podaj czestotliwość" type="text" value="@ViewData["freq1"]" />

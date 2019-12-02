@@ -1,0 +1,169 @@
+﻿
+@{
+    ViewData["Title"] = "Comparison";
+}
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script>
+        window.onload = function () {
+
+            var chartfrf1 = new CanvasJS.Chart("frf1", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                exportEnabled: true,
+                title: {
+                    text: "Pierwsza funkcja przejścia"
+                },
+                data: [{
+                    type: "line",
+                    dataPoints:@Html.Raw(ViewBag.frf1)}]
+            });
+            chartfrf1.render();
+         var chartfrf2 = new CanvasJS.Chart("frf2", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                exportEnabled: true,
+                title: {
+                    text: "Druga funkcja przejścia"
+                },
+                data: [{
+                    type: "line",
+                    dataPoints:@Html.Raw(ViewBag.frf2)}]
+            });
+            chartfrf2.render();
+         var chartfrf3 = new CanvasJS.Chart("frf3", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                exportEnabled: true,
+                title: {
+                    text: "Trzecia funkcja przejścia"
+                },
+                data: [{
+                    type: "line",
+                    dataPoints:@Html.Raw(ViewBag.frf3)}]
+            });
+            chartfrf3.render();
+        var chartfrf4 = new CanvasJS.Chart("frf4", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                exportEnabled: true,
+                title: {
+                    text: "Czwarta funkcja przejścia"
+                },
+                data: [{
+                    type: "line",
+                    dataPoints:@Html.Raw(ViewBag.frf4)}]
+            });
+            chartfrf4.render();
+        var chartfrf5 = new CanvasJS.Chart("frf5", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                exportEnabled: true,
+                title: {
+                    text: "Piąta funkcja przejścia"
+                },
+                data: [{
+                    type: "line",
+                    dataPoints:@Html.Raw(ViewBag.frf5)}]
+            });
+            chartfrf5.render();
+        var chartfrf6 = new CanvasJS.Chart("frf6", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                exportEnabled: true,
+                title: {
+                    text: "Szósta funkcja przejścia"
+                },
+                data: [{
+                    type: "line",
+                    dataPoints:@Html.Raw(ViewBag.frf6)}]
+            });
+            chartfrf6.render();
+        var chartfrf7 = new CanvasJS.Chart("frf7", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                exportEnabled: true,
+                title: {
+                    text: "Siódma funkcja przejścia"
+                },
+                data: [{
+                    type: "line",
+                    dataPoints:@Html.Raw(ViewBag.frf7)}]
+            });
+            chartfrf7.render();
+            var chartfrf8 = new CanvasJS.Chart("frf8", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                exportEnabled: true,
+                title: {
+                    text: "Ósma funkcja przejścia"
+                },
+                data: [{
+                    type: "line",
+                    dataPoints:@Html.Raw(ViewBag.frf8)}]
+            });
+            chartfrf8.render();
+            var chartfrf9 = new CanvasJS.Chart("frf9", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                exportEnabled: true,
+                title: {
+                    text: "Dziewiąta funkcja przejścia"
+                },
+                data: [{
+                    type: "line",
+                    dataPoints:@Html.Raw(ViewBag.frf9)}]
+            });
+            chartfrf9.render();
+            var chartfrf10 = new CanvasJS.Chart("frf10", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                exportEnabled: true,
+                title: {
+                    text: "Dziesiąta funkcja przejścia"
+                },
+                data: [{
+                    type: "line",
+                    dataPoints:@Html.Raw(ViewBag.frf10)}]
+            });
+            chartfrf10.render();
+        }
+    </script>
+</head>
+<body>
+    <div id="frf1" style="width: 70%; height: 200px;"></div>
+    <div id="frf2" style="width: 70%; height: 200px;"></div>
+    <div id="frf3" style="width: 70%; height: 200px;"></div>
+    <div id="frf4" style="width: 70%; height: 200px;"></div>
+    <div id="frf5" style="width: 70%; height: 200px;"></div>
+    <div id="frf6" style="width: 70%; height: 200px;"></div>
+    <div id="frf7" style="width: 70%; height: 200px;"></div>
+    <div id="frf8" style="width: 70%; height: 200px;"></div>
+    <div id="frf9" style="width: 70%; height: 200px;"></div>
+    <div id="frf10" style="width: 70%; height: 200px;"></div>
+    <form asp-controller="Home" method="post">
+
+        <div class="form-group ">
+            <input type="submit" asp-action="Final" class="btn btn-success" value="Kontynuuj" />
+        </div>
+
+
+    </form>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+
+</body>
+</html>
+
